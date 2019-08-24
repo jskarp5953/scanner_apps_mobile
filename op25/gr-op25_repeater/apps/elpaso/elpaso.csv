@@ -1,33 +1,75 @@
-1786	MetCom 1 Disp
-1792	MetCom 2 Ops
-1787	MetCom 3 Ops
-1788	MetCom 5 Ops
-1789	MetCom 7 Ops
-1790	MetCom 9 Ops
-1851	MetCom 11 Ops
-1857	MetCom 12 Ops
-1859	MetCom 13 Ops
-1046	MetCom 14 Ops
-1793	MetCom 15 Ops
-2998	MetCom 16 Ops
-1048	MetCom 17 Ops
-2996	MetCom 18 Ops
-2997	MetCom 19 Ops
-1049	MetCom IDT Ops 1
-1047	MetCom IDT Ops 2
-39	EMetCom Disp
-40	EMetCom Ops 1
-4121	EMetCom Ops 2
-4148	EMetCom Ops 3
-3001	Arapahoe Sheriff 1 - Dispatch 
-2409	 CSP Metro Dispatch
-2389	Troop 1D West Dispatch (S. Boulder) 
-2385	Troop 1A West Dispatch (Clear Creek) 
-2381	Troop 1A East Dispatch (Jefferson)
-2301	Troops 1B E470 Tollway & 1C Douglas, SW Elbert, SW Arapahoe
-2305	Troop 1D Dispatch (Adams, E. Arapahoe, E-470 N. of DIA)
-2286	Fire Mutual Aid NE Denver Metro 
-2297	Fire Mutual Aid SE Denver Metro 
-2288	Fire Mutual Aid SW Denver Metro 
-2295	Fire Mutual Aid NW Denver Metro 
-
+2522	Troop 2B/2E East Dispatch 2B/El Paso 2E/Teller
+4710	Sheriff - North Dispatch
+4712	Sheriff - South Dispatch
+4770	County Fire Red - Dispatch 
+4771	County Fire Silver 
+4772	County Fire Yellow 
+4788	Black Forest Fire 
+4789	Broadmoor Fire 
+4774	Calhan Fire 
+4780	Cimarron Hills Fire 
+4791	Cascade Fire 
+4779	Ellicott Fire 
+4776	Edison Fire 
+4778	Falcon Fire 
+4790	Green Mountain Falls Fire 
+4777	Hanover Fire 
+4783	Highway 115 Fire 
+4773	Peyton Fire 
+4792	Palmer Lake Fire 
+4781	Security Fire 
+4782	Stratmoor Hills Fire 
+4775	Tri-County Fire 
+4787	Tri-Lakes Fire 
+4784	Wescott Fire 
+4785	Woodman Valley Fire 
+4786	Woodmoor Fire 
+4730	County Fire Marshal 
+4895	AMR Ambulance 1 
+4896	AMR Ambulance 2 
+4897	AMR Ambulance 3 
+4732	Search & Rescue 
+4731	Emergency Management 
+4563	Metropolitan Medical Response System 
+4564	Metropolitan Medical Response System - Hospitals 
+4565	Metropolitan Medical Response System - Consults 
+4566	Metropolitan Medical Response System - EOC 
+4575	CSPD - Falcon 1 
+4576	CSPD - Falcon 2 
+4577	CSPD - Falcon 3 
+4578	CSPD - Goldhill 1 
+4579	CSPD - Goldhill 2 
+4580	CSPD - Goldhill 3 
+4581	CSPD - Sandcreek 1 
+4582	CSPD - Sandcreek 2 
+4583	CSPD - Sandcreek 3 
+4584	CSPD - Stetson 1 
+4585	CSPD - Stetson 2 
+4586	CSPD - Stetson 3 
+4587	CSPD - Central 1 
+4588	CSPD - Central 2 
+4620	CSFD 1 - Dispatch 
+4621	CSFD 2 - Alternate Dispatch 
+4622	CSFD 3 
+4623	CSFD 4 - Command 
+4624	CSFD 5 - Tactical 
+4625	CSFD 6 - Command 
+4626	CSFD 7 - Tactical 
+4627	CSFD 8 - Command 
+4628	CSFD 9 - Tactical 
+4629	CSFD 10 - Command 
+4630	CSFD 11 - Tactical 
+4631	CSFD 12 - Staging 
+4632	CSFD 13 
+4812	Fountain Police 1 
+4813	Fountain Police 2 
+4811	Fountain Fire 2 
+4822	Fountain Fire 5 Tactical 
+4810	Fountain Fire 10 Tactical 
+4821	Fountain Fire 15 Tactical 
+4834	Manitou PD 1
+4835	Manitou PD 2
+4831	Manitou FD 1
+4832	Manitou FD 2
+4833	Manitou FD 3
+4830	Manitou FD Admin
