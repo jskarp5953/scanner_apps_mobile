@@ -9,7 +9,7 @@ except:
     print('You MUST enter a System ID from Radio Reference')
     rrSystemId = int(input("What system ID would you like to download? "))
 
-rrUser = "
+rrUser = ""
 
 rrPass = ""
 rrSiteId = input("Site ID: ")
