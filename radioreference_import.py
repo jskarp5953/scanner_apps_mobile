@@ -9,9 +9,9 @@ except:
     print('You MUST enter a System ID from Radio Reference')
     rrSystemId = int(input("What system ID would you like to download? "))
 
-rrUser = ""
+rrUser = "jskarp5953@comcast.net"
 
-rrPass = ""
+rrPass = "o@XC!_oksPd_zeBZC8M."
 rrSiteId = input("Site ID: ")
 
 systemName = input("Please enter the system name ")
@@ -53,7 +53,7 @@ for i in talkgroups:
         result = talkgroups[count]
         tgid = str(result[0])
         tgtag = str(result[1])
-        with open(op25OutputPath + 'talkgroups.tsv', 'a+') as op25OutputFile:
+        with open(op25OutputPath + 'tgid.tsv', 'a+') as op25OutputFile:
             op25OutputFile.write(tgid + '\t' + tgtag + '\r\n')  # tgid -tab- talkgroup tag
         count = count + 1
     except Exception as e:
@@ -92,12 +92,12 @@ for i in result:
                     alternateCC = ""
                 controlcount = controlcount + 1
 
-            systemC = '"' + sysid + '"'
-            cclist = '"' + dedicatedCC + ',' + alternateCC + '"'
+            systemC = '"' + systemName + '"'
+            cclist = '"' + dedicatedCC + '"' # ,' + alternateCC + '"' removed alt CC
             offset = '"0"'
             nac = '"0"'
             modulation = '"CQPSK"'
-            tagfile = '"' + op25OutputPath + 'talkgroups.tsv"'
+            tagfile = '"' + op25OutputPath + 'tgid.tsv"'
             whitelist = '""'
             blacklist = '""'
             centerfreq = '""'
