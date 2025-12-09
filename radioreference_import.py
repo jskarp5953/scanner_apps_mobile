@@ -2,16 +2,18 @@ from zeep import Client
 import os
 import re
 
-
 try:
     rrSystemId = int(input("What system ID would you like to download? "))
 except:
     print('You MUST enter a System ID from Radio Reference')
     rrSystemId = int(input("What system ID would you like to download? "))
 
-rrUser = ""
+with open ("user.txt", "r", encoding='utf-8') as user:
+  rrUser = user.read().replace('\n', '')
 
-rrPass = ""
+with open ("pass.txt", "r", encoding='utf-8') as passwd:
+  rrPass = passwd.read().replace('\n', '')
+
 rrSiteId = input("Site ID: ")
 
 systemName = input("Please enter the system name ")
