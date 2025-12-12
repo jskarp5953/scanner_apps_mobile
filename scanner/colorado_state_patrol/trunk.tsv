@@ -1,0 +1,2 @@
+Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
+Colorado State Patrol	853.875	0	0xd17	c4fm	/home/pi/Documents/scanner/colorado_state_patrol/tgid.tsv	/home/pi/Documents/scanner/colorado_state_patrol/wlist.tsv		

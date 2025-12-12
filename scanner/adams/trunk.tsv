@@ -1,0 +1,2 @@
+"Sysname"	"Control Channel List"	"Offset"	"NAC"	"Modulation"	"TGID Tags File"	"Whitelist"	"Blacklist"	"Center Frequency"
+"adams"	"772.99375"	"0"	"0"	"CQPSK"	"/home/pi/Documents/scanner/adams/tgid.tsv"	"/home/pi/Documents/scanner/adams/wlist.tsv"	""	""

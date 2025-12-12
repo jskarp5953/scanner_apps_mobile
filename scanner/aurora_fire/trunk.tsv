@@ -1,0 +1,2 @@
+Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
+Aurora Fire	856.9375	0	0	cqpsk	/home/pi/Documents/scanner/aurora_fire/tgid.tsv	/home/pi/Documents/scanner/aurora_fire/wlist.tsv		
