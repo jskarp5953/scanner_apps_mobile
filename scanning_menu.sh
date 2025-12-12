@@ -39,7 +39,7 @@ do
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:37' -S 2500000 -o 17e3 -X\
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
-            -V -w -M meta.json -2 -O pulse -T /home/pi/Documents/scanner/aurora_fire/trunk.tsv&&
+            -V -w -M meta.json -2 -O pulse -T /home/pi/scanner_apps/scanner/aurora_fire/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
@@ -57,7 +57,7 @@ do
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
-            -V -w -M meta.json -O pulse -T /home/pi/Documents/scanner/southeastmetro_fire/trunk.tsv&&
+            -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/southeastmetro_fire/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
@@ -75,7 +75,7 @@ do
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
-            -V -w -M meta.json -O pulse -T /home/pi/Documents/scanner/colorado_state_patrol/trunk.tsv&&
+            -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/colorado_state_patrol/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
@@ -93,7 +93,7 @@ do
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X -2 \
             -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
-            --nocrypt -V -w -M meta.json -O pulse -T /home/pi/Documents/scanner/adams/trunk.tsv&&
+            --nocrypt -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/adams/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
