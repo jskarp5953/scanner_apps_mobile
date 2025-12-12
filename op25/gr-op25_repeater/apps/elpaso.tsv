@@ -1,2 +1,0 @@
-Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
-El Paso Co	853.7125	0	0xd1c	cqpsk	elpaso/elpaso.csv	elpaso/elpaso_whitelist.csv		

@@ -1,3 +1,0 @@
-Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
-Aurora	856.9375	0	0x841	cqpsk	aurora/aurora.csv	aurora/aurora_whitelist.csv		
-Arapahoe CO	853.875	0	0xd17	cqpsk	arapahoe/arapahoe.csv	arapahoe/arapahoe_whitelist.csv		
