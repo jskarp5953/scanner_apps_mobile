@@ -20,7 +20,7 @@ systemName = input("Please enter the system name ")
 
 # parameters
 #op25OutputPath = os.getcwd() + "/"
-op25OutputPath = f"/home/pi/Documents/scanner/{systemName}/"
+op25OutputPath = f"/home/pi/scanner_apps/scanner/{systemName}/"
 
 #make sure op25OutputPath exists
 os.makedirs(op25OutputPath, exist_ok=True)
