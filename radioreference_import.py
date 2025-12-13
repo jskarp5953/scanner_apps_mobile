@@ -8,10 +8,10 @@ except:
     print('You MUST enter a System ID from Radio Reference')
     rrSystemId = int(input("What system ID would you like to download? "))
 
-with open ("user.txt", "r", encoding='utf-8') as user:
+with open ("/home/pi/radioref.user.txt", "r", encoding='utf-8') as user:
   rrUser = user.read().replace('\n', '')
 
-with open ("pass.txt", "r", encoding='utf-8') as passwd:
+with open ("/home/pi/radioref_pass.txt", "r", encoding='utf-8') as passwd:
   rrPass = passwd.read().replace('\n', '')
 
 rrSiteId = input("Site ID: ")
