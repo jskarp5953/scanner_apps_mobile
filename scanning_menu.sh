@@ -1,6 +1,12 @@
 #!/bin/bash
-# Bash script to engage scanner truck systems and open browser to monitor
+# Bash script to engage scanner trunk systems and open browser to monitor
 # web page
+# This script should be set to auto start at boot.
+# location for autoboot should set here /home/pi/.config/autostart create file if not created already
+# example of configuration
+# [Desktop Entry]
+#  Name=Scanner Menu
+#  Exec=/usr/bin/x-terminal-emulator -e /home/pi/scanner_apps/scanning_menu.sh
 
 # Change default browser
 xdg-settings set default-web-browser chromium-browser.desktop
@@ -23,7 +29,7 @@ clear
 
 PS3='Please enter your choice: '
 
-# Names that will be displayed in the menu. Names nee to be double quoted
+# Names that will be displayed in the menu. Names need to be double quoted
 options=("Aurora Fire" "South and East Metro Fire" "CO State Patrol" "Adams County" "Quit Scanning" \
          "Reboot System" "Shutdown System")
 
