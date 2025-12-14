@@ -57,6 +57,8 @@ for i in talkgroups:
         tgtag = str(result[1])
         with open(op25OutputPath + 'tgid.tsv', 'a+') as op25OutputFile:
             op25OutputFile.write(tgid + '\t' + tgtag + '\r\n')  # tgid -tab- talkgroup tag
+        with open(op25OutputPath + 'wlist.tsv', 'a+') as op25OutputWlistFile:
+            op25OutputWlistFile.write(tgid + '\r\n')            
         count = count + 1
     except Exception as e:
         print(e)
@@ -100,7 +102,7 @@ for i in result:
             nac = '"0"'
             modulation = '"CQPSK"'
             tagfile = '"' + op25OutputPath + 'tgid.tsv"'
-            whitelist = '""'
+            whitelist = '"' + op25OutputPath + 'wlist.tsv"'
             blacklist = '""'
             centerfreq = '""'
 
