@@ -30,8 +30,8 @@ clear
 PS3='Please enter your choice: '
 
 # Names that will be displayed in the menu. Names need to be double quoted
-options=("Aurora Fire" "South and East Metro Fire" "CO State Patrol" "Adams County" "Quit Scanning" \
-         "Reboot System" "Shutdown System")
+options=("Aurora Fire" "South and East Metro Fire" "CO State Patrol" "Adams County" "Douglas County" \
+         "Quit Scanning" "Reboot System" "Shutdown System")
 
 select opt in "${options[@]}"
 do
@@ -100,6 +100,24 @@ do
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X -2 \
             -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             --nocrypt -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/adams/trunk.tsv&&
+            sleep 5
+            x-terminal-emulator -e ./op25.liq&&
+            sleep 2
+            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+             --enable-chrome-browser-cloud-management&&
+            sleep 1
+            ;;
+
+        "Douglas County")
+            echo "you chose $opt"
+
+            echo "Starting scan of $opt"
+            pkill --full "rx.py"
+            pkill --full "op25.liq"
+            pkill --full "chromium-browser"
+            x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
+            --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
+            -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/douglas/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
