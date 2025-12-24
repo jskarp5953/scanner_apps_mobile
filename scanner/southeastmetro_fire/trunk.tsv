@@ -1,2 +1,2 @@
 Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
-South and East Metro Fire	853.525	0	"0"	c4fm	/home/pi/scanner_apps/scanner/southeastmetro_fire/tgid.tsv	/home/pi/scanner_apps/scanner/southeastmetro_fire/wlist.tsv		
+South and East Metro Fire	853.875	0	"0"	c4fm	/home/pi/scanner_apps/scanner/southeastmetro_fire/tgid.tsv	/home/pi/scanner_apps/scanner/southeastmetro_fire/wlist.tsv		

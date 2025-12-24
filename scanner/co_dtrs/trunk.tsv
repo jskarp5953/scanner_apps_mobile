@@ -1,2 +1,2 @@
 "Sysname"	"Control Channel List"	"Offset"	"NAC"	"Modulation"	"TGID Tags File"	"Whitelist"	"Blacklist"	"Center Frequency"
-"co_dtrs"	"853.525"	"0"	"0"	"CQPSK"	"/home/pi/scanner_apps/scanner/co_dtrs/tgid.tsv"	"/home/pi/scanner_apps/scanner/co_dtrs/wlist.tsv"	""	""
+"co_dtrs"	"853.875"	"0"	"0"	"CQPSK"	"/home/pi/scanner_apps/scanner/co_dtrs/tgid.tsv"	"/home/pi/scanner_apps/scanner/co_dtrs/wlist.tsv"	""	""
