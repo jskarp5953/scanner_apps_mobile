@@ -1,2 +1,2 @@
 Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
-douglas county	853.875	0	0xd17	c4fm	/home/pi/scanner_apps/scanner/douglas/tgid.tsv	/home/pi/scanner_apps/scanner/douglas/wlist.tsv		
+douglas county	853.525	0	"0"	c4fm	/home/pi/scanner_apps/scanner/douglas/tgid.tsv	/home/pi/scanner_apps/scanner/douglas/wlist.tsv		
