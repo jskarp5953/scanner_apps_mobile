@@ -9,7 +9,7 @@
 #  Exec=/usr/bin/x-terminal-emulator -e /home/pi/scanner_apps/scanning_menu.sh
 
 # Change default browser
-xdg-settings set default-web-browser chromium-browser.desktop
+xdg-settings set default-web-browser chromium.desktop
 # xdg-open http://localhost:8080
 
 # Change directory to where the rx.py exec is at.
@@ -17,7 +17,7 @@ cd /home/pi/op25/op25/gr-op25_repeater/apps
 
 x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.json&&
             sleep 5
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
 
 # Clear the screen
@@ -40,7 +40,7 @@ do
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.json&&
             sleep 5
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
