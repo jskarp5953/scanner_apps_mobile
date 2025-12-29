@@ -51,7 +51,7 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "chromium"
-            x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/southmetro_fire/southmetro.json&&
+            x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/southmetro_fire/southmetro_fire.json&&
             sleep 5
             x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
