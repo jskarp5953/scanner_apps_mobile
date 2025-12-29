@@ -50,7 +50,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
@@ -68,7 +68,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
@@ -86,7 +86,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X -2 \
             -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
@@ -104,7 +104,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
@@ -122,7 +122,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:37' -S 2500000 -o 17e3 -X\
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
@@ -137,7 +137,7 @@ do
 
         "Quit Scanning")
             pkill --full "multi_rx.py"
-            pkill --full "op25.liq"
+            #pkill --full "op25.liq"
             pkill --full "chromium"
             break
             ;;
