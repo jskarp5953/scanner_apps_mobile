@@ -3,7 +3,7 @@
         {
             "name": "Voice Channel",
             "device": "sdr0",
-            "trunking_sysname": "Aurora Fire",
+            "trunking_sysname": "Trunked System",
             "demod_type": "cqpsk",
             "destination": "udp://127.0.0.1:23456",
             "meta_stream_name": "",
@@ -37,7 +37,7 @@
                 "#nac": "0x4a6",
                 "#wacn": "0xbee00",
                 "#sysid": "0x4a2",
-                "sysname": "Aurora Fire",
+                "sysname": "Trunked System",
                 "control_channel_list": "856.9375",
                 "whitelist": "",
                 "tgid_tags_file": "",
