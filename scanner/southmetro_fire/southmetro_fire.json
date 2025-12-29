@@ -6,7 +6,7 @@
             "trunking_sysname": "South Metro Fire",
             "demod_type": "cqpsk",
             "destination": "udp://rpiscanner:23456",
-            "meta_stream_name": "",
+            "meta_stream_name": "stream0",
             "excess_bw": 0.2,
             "filter_type": "rc",
             "if_rate": 24000,
@@ -79,7 +79,7 @@
     },
     "terminal": {
         "module": "terminal.py",
-        "terminal_type": "curses",
+        "#terminal_type": "curses",
         "terminal_type": "http:0.0.0.0:8080",
         "curses_plot_interval": 0.1,
         "http_plot_interval": 1.0,
