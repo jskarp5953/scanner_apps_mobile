@@ -4,7 +4,7 @@
             "name": "Voice Channel",
             "device": "sdr0",
             "trunking_sysname": "South Metro Fire",
-            "demod_type": "c4fm",
+            "demod_type": "cqpsk",
             "destination": "udp://rpiscanner:23456",
             "meta_stream_name": "",
             "excess_bw": 0.2,
