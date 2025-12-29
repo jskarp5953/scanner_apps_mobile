@@ -37,7 +37,7 @@ do
 
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.json&&
             sleep 5
             x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
@@ -51,14 +51,14 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/southeastmetro_fire/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
@@ -69,14 +69,14 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/colorado_state_patrol/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
@@ -87,14 +87,14 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X -2 \
             -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             --nocrypt -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/adams/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
@@ -105,14 +105,14 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             -V -w -M meta.json -O pulse -T /home/pi/scanner_apps/scanner/douglas/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
@@ -123,14 +123,14 @@ do
             echo "Starting scan of $opt"
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:37' -S 2500000 -o 17e3 -X\
             --nocrypt -l 'http:0.0.0.0:8080' --crypt-behavior=2  \
             -V -w -M meta.json -2 -O pulse -T /home/pi/scanner_apps/scanner/co_dtrs/trunk.tsv&&
             sleep 5
             x-terminal-emulator -e ./op25.liq&&
             sleep 2
-            x-terminal-emulator -e chromium-browser --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
              --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
@@ -138,7 +138,7 @@ do
         "Quit Scanning")
             pkill --full "multi_rx.py"
             pkill --full "op25.liq"
-            pkill --full "chromium-browser"
+            pkill --full "chromium"
             break
             ;;
 
