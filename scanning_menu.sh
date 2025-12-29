@@ -49,7 +49,7 @@ do
             echo "you chose $opt"
 
             echo "Starting scan of $opt"
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
@@ -67,7 +67,7 @@ do
             echo "you chose $opt"
 
             echo "Starting scan of $opt"
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
@@ -85,7 +85,7 @@ do
             echo "you chose $opt"
 
             echo "Starting scan of $opt"
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X -2 \
@@ -103,7 +103,7 @@ do
             echo "you chose $opt"
 
             echo "Starting scan of $opt"
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:60' -S 2500000 -o 17e3 -X \
@@ -121,7 +121,7 @@ do
             echo "you chose $opt"
 
             echo "Starting scan of $opt"
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             x-terminal-emulator -e ./rx.py --args 'rtl' -N 'LNA:37' -S 2500000 -o 17e3 -X\
@@ -136,7 +136,7 @@ do
             ;;
 
         "Quit Scanning")
-            pkill --full "rx.py"
+            pkill --full "multi_rx.py"
             pkill --full "op25.liq"
             pkill --full "chromium-browser"
             break
