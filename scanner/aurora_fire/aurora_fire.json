@@ -39,8 +39,8 @@
                 "#sysid": "0x4a2",
                 "sysname": "Aurora Fire",
                 "control_channel_list": "856.9375,856.9625,856.9875,857.7625",
-                "whitelist": "",
-                "tgid_tags_file": "",
+                "whitelist": "/home/pi/scanner_apps/scanner/aurora_fire/wlist.tsv",
+                "tgid_tags_file": "/home/pi/scanner_apps/scanner/aurora_fire/tgid.tsv",
                 "rid_tags_file": "",
                 "tdma_cc": false,
                 "crypt_behavior": 2
