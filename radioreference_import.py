@@ -1,4 +1,4 @@
-# for auth you need to modify the files named radioref_user.txt and radioref_pass.txt in /home/pi/scanner_apps/
+# for auth you need to add/modify the files named radioref_user.txt and radioref_pass.txt in /home/pi/scanner_apps/
 
 from zeep import Client
 import os
