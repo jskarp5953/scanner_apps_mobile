@@ -17,8 +17,8 @@ cd /home/pi/op25/op25/gr-op25_repeater/apps
 
 x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
 
 # Clear the screen
 clear
@@ -40,8 +40,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --password-store=basic --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 
@@ -53,8 +53,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/southmetro_fire/southmetro_fire.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --password-store=basic --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 
@@ -66,8 +66,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/co_state_patrol/co_state_patrol.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 
@@ -79,8 +79,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/adams/adams.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 
@@ -92,8 +92,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/douglas/douglas.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 
@@ -105,8 +105,8 @@ do
             pkill --full "chromium"
             x-terminal-emulator -e ./multi_rx.py -c /home/pi/scanner_apps/scanner/co_dtrs/co_dtrs.json&&
             sleep 5
-            x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
-             --enable-chrome-browser-cloud-management&&
+            #x-terminal-emulator -e chromium --app=http://127.0.0.1:8080 --start-maximized --disable-gpu --disable-component-update \
+            # --enable-chrome-browser-cloud-management&&
             sleep 1
             ;;
 

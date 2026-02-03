@@ -1,0 +1,15 @@
+[Unit]
+Description=op25-rx-aurora-fire
+After=syslog.target network.target nss-lookup.target network-online.target
+Requires=network-online.target
+
+[Service]
+User=1000
+Group=1000
+WorkingDirectory=/home/pi/scanner_apps/scanner
+ExecStart=/bin/bash -- aurora_fire/aurora_fire.sh
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
