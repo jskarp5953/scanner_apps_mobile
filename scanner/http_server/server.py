@@ -110,6 +110,7 @@ class Handler(BaseHTTPRequestHandler):
             html.append('<div id="tab-systems" class="tabcontent card">')
             html.append('<div class="muted">Click a system to start it; the active system will turn <b>red</b>.</div>')
             html.append('<div style="margin-top:12px" id="systems-list">Loading systems…</div>')
+            html.append('<div style="margin-top:10px"><label>Default system: <select id="default_select"></select></label> <button onclick="saveDefault()">Save Default</button> <button onclick="startDefault()">Start Default</button></div>')
             html.append('<div style="margin-top:12px" class="controls"><button onclick="reloadSystems()">Reload</button> <span class="muted">Current status: </span> <span id="status">(no process)</span></div>')
             html.append('</div>')
 
@@ -152,10 +153,37 @@ async function renderSystems(){
     const wrapper = document.createElement('div'); wrapper.style.marginBottom='6px'; wrapper.appendChild(btn); wrapper.appendChild(meta);
     list.appendChild(wrapper);
   });
+  // populate default dropdown
+  const sel = document.getElementById('default_select');
+  if(sel){
+    sel.innerHTML = '';
+    const settings = await (await fetch('/settings')).json();
+    systems.forEach(s=>{
+      const opt = document.createElement('option'); opt.value = s.system_name; opt.textContent = s.system_name;
+      if(settings.default && settings.default === s.system_name) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
   updateStatus();
 }
 
 async function reloadSystems(){ await renderSystems(); }
+
+async function saveDefault(){
+  const sel = document.getElementById('default_select');
+  if(!sel) return;
+  const value = sel.value || null;
+  const r = await fetch('/settings', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({default: value})});
+  const j = await r.json();
+  if(r.ok) alert('Saved default: '+value);
+  else alert('Save failed: '+ (j.error || JSON.stringify(j)));
+}
+
+async function startDefault(){
+  const sel = document.getElementById('default_select');
+  if(!sel) return alert('No default selected');
+  await start(sel.value);
+}
 
 async function start(name){
   const buttons = document.querySelectorAll('.system-button');
