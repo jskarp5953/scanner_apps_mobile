@@ -17,5 +17,15 @@ Notes:
 - Scripts are launched via `/bin/bash <script>` and run in their own process group; the server attempts to gracefully terminate the previous process group when starting a new system.
 - The web UI has two tabs:
   - **Systems**: clickable buttons for each system. Clicking a system starts its script; the active system button will turn red while running.
-  - **Power**: control panel with **Stop**, **Kill**, and **Restart** actions for the running system.
+  - **Power**: control panel with **Stop**, **Kill**, **Restart** (restarts the running system process), and host-level **Reboot** and **Shutdown** buttons. Be careful: Reboot/Shutdown affect the whole host.
 - Use the **Default system** selector (in the Systems tab) to set an auto-started system; the selection is saved to `server_settings.json` in the same directory.
+
+Host reboot/shutdown notes:
+- By default the server will attempt to run `reboot`/`shutdown -h now`. If the server is not running as root, it will prefix commands with `sudo` and will therefore require passwordless sudo configuration to work unattended. Example sudoers entry (edit with `visudo`):
+
+```
+# allow user 'pi' to run reboot/shutdown without password
+pi ALL=(ALL) NOPASSWD: /sbin/reboot, /sbin/shutdown
+```
+
+- For safe testing without actually rebooting, set the environment variable `HOST_ACTIONS_DRY_RUN=1` before starting the server; the endpoints return a JSON response but do not execute host actions.

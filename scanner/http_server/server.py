@@ -115,7 +115,7 @@ class Handler(BaseHTTPRequestHandler):
             html.append('</div>')
 
             html.append('<div id="tab-power" class="tabcontent" style="display:none">')
-            html.append('<div class="card"><h3>Power</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><p class="muted">Process info: <span id="power-info">none</span></p></div>')
+            html.append('<div class="card"><h3>Power</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button><button onclick="hostReboot()" style="background:#f39c12;color:#fff;border-color:#f39c12">Reboot Host</button><button onclick="hostShutdown()" style="background:#c0392b;color:#fff;border-color:#c0392b">Shutdown Host</button></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><p class="muted">Process info: <span id="power-info">none</span></p><p class="muted">Warning: Reboot/Shutdown will affect the host; ensure the server user can run these commands (see README).</p></div>')
             html.append('</div>')
 
             html.append('''
@@ -209,6 +209,22 @@ async function restart(){
   const name = st.system_name; await stop(); await start(name);
 }
 
+async function hostReboot(){
+  if(!confirm('Reboot the host now? This will reboot the Raspberry Pi.')) return;
+  const r = await fetch('/host/reboot', {method:'POST'});
+  const j = await r.json();
+  if(!r.ok) alert('Reboot failed: '+(j.error||JSON.stringify(j)));
+  else alert('Reboot initiated');
+}
+
+async function hostShutdown(){
+  if(!confirm('Shutdown the host now? This will power off the Raspberry Pi.')) return;
+  const r = await fetch('/host/shutdown', {method:'POST'});
+  const j = await r.json();
+  if(!r.ok) alert('Shutdown failed: '+(j.error||JSON.stringify(j)));
+  else alert('Shutdown initiated');
+}
+
 async function updateStatus(){
   const r = await fetch('/status');
   const j = await r.json();
@@ -288,6 +304,39 @@ setInterval(updateStatus,3000);
             ok = force_kill_current()
             self._set_json(200)
             self.wfile.write(json.dumps({'killed': ok}).encode('utf-8'))
+            return
+        elif parsed.path == '/host/reboot':
+            try:
+                # attempt to stop current process cleanly
+                stop_current()
+                dry = os.environ.get('HOST_ACTIONS_DRY_RUN') == '1'
+                cmd = ['reboot'] if os.geteuid() == 0 else ['sudo', 'reboot']
+                if dry:
+                    self._set_json(200)
+                    self.wfile.write(json.dumps({'reboot': True, 'dry_run': True, 'cmd': cmd}).encode('utf-8'))
+                else:
+                    subprocess.Popen(cmd)
+                    self._set_json(200)
+                    self.wfile.write(json.dumps({'reboot': True}).encode('utf-8'))
+            except Exception as e:
+                self._set_json(500)
+                self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+            return
+        elif parsed.path == '/host/shutdown':
+            try:
+                stop_current()
+                dry = os.environ.get('HOST_ACTIONS_DRY_RUN') == '1'
+                cmd = ['shutdown', '-h', 'now'] if os.geteuid() == 0 else ['sudo', 'shutdown', '-h', 'now']
+                if dry:
+                    self._set_json(200)
+                    self.wfile.write(json.dumps({'shutdown': True, 'dry_run': True, 'cmd': cmd}).encode('utf-8'))
+                else:
+                    subprocess.Popen(cmd)
+                    self._set_json(200)
+                    self.wfile.write(json.dumps({'shutdown': True}).encode('utf-8'))
+            except Exception as e:
+                self._set_json(500)
+                self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
             return
         elif parsed.path == '/settings':
             try:
