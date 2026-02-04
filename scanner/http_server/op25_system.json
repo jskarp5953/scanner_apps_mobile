@@ -10,7 +10,7 @@
     },
     {
       "system_name": "Colorado DTRS",
-      "config_file": "/home/pi/scanner_apps/scanner/co_dtrs/co_.sh"
+      "config_file": "/home/pi/scanner_apps/scanner/co_dtrs/co_dtrs_.sh"
     },     
     {
       "system_name": "Colorado State Patrol",
