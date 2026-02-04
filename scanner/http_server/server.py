@@ -80,8 +80,43 @@ def force_kill_current():
 def start_system(config_file, system_name):
     global _proc, _proc_info
     with _lock:
+        # Stop any tracked process first
         if _proc is not None:
             stop_current()
+
+        # Some config scripts spawn detached children; attempt to find
+        # any lingering processes that reference the config file and
+        # terminate them before starting a new instance.
+        try:
+            out = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+            pids = [int(x) for x in out.split() if x.strip()]
+            for pid in pids:
+                try:
+                    if _proc and pid == _proc.pid:
+                        # already handled by stop_current()
+                        continue
+                    os.killpg(os.getpgid(pid), signal.SIGTERM)
+                except Exception:
+                    pass
+            # brief wait for processes to exit gracefully
+            import time
+            time.sleep(0.5)
+            # force-kill remaining matches
+            try:
+                out2 = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+                pids2 = [int(x) for x in out2.split() if x.strip()]
+                for pid in pids2:
+                    try:
+                        os.killpg(os.getpgid(pid), signal.SIGKILL)
+                    except Exception:
+                        pass
+            except subprocess.CalledProcessError:
+                # no remaining processes
+                pass
+        except subprocess.CalledProcessError:
+            # pgrep found nothing
+            pass
+
         p = subprocess.Popen(['/bin/bash', config_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid)
         _proc = p
         _proc_info = {'pid': p.pid, 'system_name': system_name}
