@@ -86,24 +86,40 @@ def start_system(config_file, system_name):
 
         # Some config scripts spawn detached children; attempt to find
         # any lingering processes that reference the config file and
-        # terminate them before starting a new instance.
+        # terminate them before starting a new instance. Use a strict
+        # full-command match where possible to avoid accidental matches.
         try:
-            out = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+            pattern = f"/bin/bash {config_file}"
+            # try strict full-command match first (pgrep -f -x)
+            out = subprocess.check_output(['pgrep', '-f', '-x', pattern], text=True)
+        except subprocess.CalledProcessError:
+            out = ''
+        except Exception:
+            out = ''
+
+        if out:
             pids = [int(x) for x in out.split() if x.strip()]
             for pid in pids:
                 try:
                     if _proc and pid == _proc.pid:
-                        # already handled by stop_current()
                         continue
                     os.killpg(os.getpgid(pid), signal.SIGTERM)
                 except Exception:
                     pass
-            # brief wait for processes to exit gracefully
+            # brief wait for graceful exit
             import time
-            time.sleep(0.5)
-            # force-kill remaining matches
+            deadline = time.time() + 3.0
+            while time.time() < deadline:
+                try:
+                    rem = subprocess.check_output(['pgrep', '-f', '-x', pattern], text=True)
+                    if not rem.strip():
+                        break
+                except subprocess.CalledProcessError:
+                    break
+                time.sleep(0.2)
+            # force-kill any remaining strict matches
             try:
-                out2 = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+                out2 = subprocess.check_output(['pgrep', '-f', '-x', pattern], text=True)
                 pids2 = [int(x) for x in out2.split() if x.strip()]
                 for pid in pids2:
                     try:
@@ -111,11 +127,34 @@ def start_system(config_file, system_name):
                     except Exception:
                         pass
             except subprocess.CalledProcessError:
-                # no remaining processes
                 pass
-        except subprocess.CalledProcessError:
-            # pgrep found nothing
-            pass
+        else:
+            # fallback: conservative partial match (may match many processes on macOS);
+            # only use as last resort and target process groups where possible.
+            try:
+                out = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+                pids = [int(x) for x in out.split() if x.strip()]
+                for pid in pids:
+                    try:
+                        if _proc and pid == _proc.pid:
+                            continue
+                        os.killpg(os.getpgid(pid), signal.SIGTERM)
+                    except Exception:
+                        pass
+                import time
+                time.sleep(0.5)
+                try:
+                    out2 = subprocess.check_output(['pgrep', '-f', config_file], text=True)
+                    pids2 = [int(x) for x in out2.split() if x.strip()]
+                    for pid in pids2:
+                        try:
+                            os.killpg(os.getpgid(pid), signal.SIGKILL)
+                        except Exception:
+                            pass
+                except subprocess.CalledProcessError:
+                    pass
+            except subprocess.CalledProcessError:
+                pass
 
         p = subprocess.Popen(['/bin/bash', config_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid)
         _proc = p
