@@ -17,8 +17,8 @@ Notes:
 - Scripts are launched via `/bin/bash <script>` and run in their own process group; the server attempts to gracefully terminate the previous process group when starting a new system.
 - The web UI has two tabs:
   - **Systems**: clickable buttons for each system. Clicking a system starts its script; the active system button will turn red while running.
-  - **Power**: control panel with **Stop**, **Kill**, **Restart** (restarts the running system process), and host-level **Reboot** and **Shutdown** buttons. Be careful: Reboot/Shutdown affect the whole host.
-- Use the **Default system** selector (in the Systems tab) to set an auto-started system; the selection is saved to `server_settings.json` in the same directory.
+  - **Power**: control panel with **Stop**, **Kill**, **Restart**, **Reload** (reload systems list), and host-level **Reboot**/**Shutdown** buttons; **Current status** indicator is shown here. Be careful: Reboot/Shutdown affect the whole host.
+- Use the **Settings** tab to set an auto-started default system; the selection is saved to `server_settings.json` in the same directory.
 
 Host reboot/shutdown notes:
 - By default the server will attempt to run `reboot`/`shutdown -h now`. If the server is not running as root, it will prefix commands with `sudo` and will therefore require passwordless sudo configuration to work unattended. Example sudoers entry (edit with `visudo`):
