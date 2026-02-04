@@ -126,6 +126,11 @@ function showTab(name){
   // find the tab button with the matching onclick attribute and mark it active
   const btn = Array.from(document.querySelectorAll('.tabs button')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+name+"'"));
   if(btn) btn.classList.add('active');
+  // when showing systems tab, refresh the systems list and status
+  if(name === 'systems'){
+    if(typeof renderSystems === 'function') renderSystems();
+    if(typeof updateStatus === 'function') updateStatus();
+  }
 }
 
 async function fetchSystems(){
