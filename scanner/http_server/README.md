@@ -17,7 +17,7 @@ Notes:
 - Scripts are launched via `/bin/bash <script>` and run in their own process group; the server attempts to gracefully terminate the previous process group when starting a new system.
 - The web UI has two tabs:
   - **Systems**: clickable buttons for each system. Clicking a system starts its script; the active system button will turn red while running.
-  - **Power**: control panel with **Stop**, **Kill**, **Restart**, **Reload** (reload systems list), and host-level **Reboot**/**Shutdown** buttons; **Current status** indicator is shown here. Be careful: Reboot/Shutdown affect the whole host.
+  - **Power**: **OP25 Control Options** — control panel with **Stop**, **Kill**, **Restart**, and **Reload** (reload systems list). This tab also contains a **Server Host Power** subsection with **Reboot**/**Shutdown** host-level buttons; **Current status** indicator is shown here. Be careful: Reboot/Shutdown affect the whole host.
 - Use the **Settings** tab to set an auto-started default system; the selection is saved to `server_settings.json` in the same directory.
 
 Host reboot/shutdown notes:
