@@ -58,6 +58,25 @@ def stop_current():
         return True
 
 
+def force_kill_current():
+    """Forcefully kill the current process group with SIGKILL."""
+    global _proc, _proc_info
+    with _lock:
+        if _proc is None:
+            return False
+        try:
+            os.killpg(os.getpgid(_proc.pid), signal.SIGKILL)
+        except Exception:
+            pass
+        try:
+            _proc.wait(timeout=5)
+        except Exception:
+            pass
+        _proc = None
+        _proc_info = None
+        return True
+
+
 def start_system(config_file, system_name):
     global _proc, _proc_info
     with _lock:
@@ -83,63 +102,95 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         if parsed.path == '/':
-            systems = read_systems()
-            html = ['<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>OP25 Systems</title></head><body>']
-            html.append('<h2>Available Systems</h2>')
-            # list
-            html.append('<ul>')
-            for s in systems:
-                name = s.get('system_name')
-                cfg = s.get('config_file')
-                html.append(f"<li><b>{name}</b> - <small>{cfg}</small> <button onclick=\"start('{name}')\">Start</button></li>")
-            html.append('</ul>')
+            html = ['<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>OP25 Control</title>']
+            html.append('<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;color:#222} .tabs{display:flex;gap:8px;margin-bottom:16px} .tabs button{padding:8px 14px;border:0;border-radius:6px;background:#eee;cursor:pointer} .tabs button.active{background:#3498db;color:#fff} .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)} .system-button{display:inline-block;margin:6px;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6;cursor:pointer} .system-button.active{background:#e74c3c;color:#fff;border-color:#e74c3c} .controls{display:flex;gap:8px;align-items:center;margin-top:8px} .muted{color:#666;font-size:0.9em} #status{font-weight:600}</style>')
+            html.append('</head><body>')
+            html.append('<h1>OP25 Control</h1>')
+            html.append('<div class="tabs"><button id="tab-systems" class="active" onclick="showTab(\'systems\')">Systems</button><button id="tab-power" onclick="showTab(\'power\')">Power</button></div>')
+            html.append('<div id="tab-systems" class="tabcontent card">')
+            html.append('<div class="muted">Click a system to start it; the active system will turn <b>red</b>.</div>')
+            html.append('<div style="margin-top:12px" id="systems-list">Loading systems…</div>')
+            html.append('<div style="margin-top:12px" class="controls"><button onclick="reloadSystems()">Reload</button> <span class="muted">Current status: </span> <span id="status">(no process)</span></div>')
+            html.append('</div>')
 
-            # default selector
-            html.append('<h3>Default system (auto-start)</h3>')
-            html.append('<select id="default_select"></select> <button onclick="saveDefault()">Save Default</button> <button onclick="startDefault()">Start Default</button>')
+            html.append('<div id="tab-power" class="tabcontent" style="display:none">')
+            html.append('<div class="card"><h3>Power</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><p class="muted">Process info: <span id="power-info">none</span></p></div>')
+            html.append('</div>')
 
-            html.append('<p><button onclick="stop()">Stop</button> <span id="status">(no process)</span></p>')
             html.append('''
 <script>
-function makeOption(name, selected){
-  const opt = document.createElement('option');
-  opt.value = name; opt.textContent = name;
-  if(selected) opt.selected = true;
-  return opt;
+function showTab(name){
+  document.querySelectorAll('.tabcontent').forEach(el=>el.style.display='none');
+  document.getElementById('tab-'+name).style.display='block';
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  // find the tab button with the matching onclick attribute and mark it active
+  const btn = Array.from(document.querySelectorAll('.tabs button')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+name+"'"));
+  if(btn) btn.classList.add('active');
 }
-async function loadSettings(){
-  const r = await fetch('/settings');
-  const j = await r.json();
-  const sel = document.getElementById('default_select');
-  sel.innerHTML = '';
-  // populate
-  const systemsResp = await fetch('/systems');
-  const systems = await systemsResp.json();
-  systems.forEach(s=> sel.appendChild(makeOption(s.system_name, s.system_name === j.default)));
+
+async function fetchSystems(){
+  const r = await fetch('/systems');
+  return await r.json();
 }
-async function saveDefault(){
-  const sel = document.getElementById('default_select');
-  const value = sel.value || null;
-  await fetch('/settings',{method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({default: value})});
-  alert('Saved default: '+value);
-}
-async function startDefault(){
-  const sel = document.getElementById('default_select');
-  if(!sel.value){ alert('No default selected'); return }
-  await fetch('/start', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system_name: sel.value})});
+
+async function renderSystems(){
+  const list = document.getElementById('systems-list');
+  const systems = await fetchSystems();
+  list.innerHTML = '';
+  systems.forEach(s=>{
+    const btn = document.createElement('button');
+    btn.className = 'system-button';
+    btn.textContent = s.system_name;
+    btn.setAttribute('data-name', s.system_name);
+    btn.onclick = async ()=>{ await start(s.system_name); };
+    const meta = document.createElement('div'); meta.className='muted'; meta.style.display='inline-block'; meta.style.marginLeft='8px'; meta.textContent = s.config_file;
+    const wrapper = document.createElement('div'); wrapper.style.marginBottom='6px'; wrapper.appendChild(btn); wrapper.appendChild(meta);
+    list.appendChild(wrapper);
+  });
   updateStatus();
 }
+
+async function reloadSystems(){ await renderSystems(); }
+
 async function start(name){
+  const buttons = document.querySelectorAll('.system-button');
+  buttons.forEach(b=>{ if(b.dataset.name===name){ b.disabled=true } });
   const resp = await fetch('/start', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system_name:name})});
   const j = await resp.json();
   updateStatus();
-  alert(JSON.stringify(j));
+  buttons.forEach(b=>b.disabled=false);
+  if(!resp.ok) alert('Start failed: '+ (j.error || JSON.stringify(j)));
 }
-async function stop(){ await fetch('/stop',{method:'POST'}); updateStatus(); }
-async function updateStatus(){ const r=await fetch('/status'); const j=await r.json(); document.getElementById('status').innerText = j.running ? (j.system_name+' (pid '+j.pid+')') : '(no process)'; }
+
+async function stop(){
+  const r = await fetch('/stop', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) alert('Stop failed')
+}
+
+async function kill(){
+  const r = await fetch('/kill', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) alert('Kill failed')
+}
+
+async function restart(){
+  const st = await (await fetch('/status')).json();
+  if(!st.running){ alert('No running system to restart'); return }
+  const name = st.system_name; await stop(); await start(name);
+}
+
+async function updateStatus(){
+  const r = await fetch('/status');
+  const j = await r.json();
+  const statusEl = document.getElementById('status');
+  const powerInfo = document.getElementById('power-info');
+  if(j.running){ statusEl.innerText = j.system_name+' (pid '+j.pid+')'; powerInfo.innerText = j.system_name+' (pid '+j.pid+')' }
+  else { statusEl.innerText = '(no process)'; powerInfo.innerText = 'none' }
+  document.querySelectorAll('.system-button').forEach(b=>{
+    if(j.running && b.dataset.name===j.system_name){ b.classList.add('active') } else { b.classList.remove('active') }
+  });
+}
+
+// initial render
+renderSystems();
 setInterval(updateStatus,3000);
-updateStatus();
-loadSettings();
 </script>
 ''')
             html.append('</body></html>')
@@ -199,6 +250,11 @@ loadSettings();
             ok = stop_current()
             self._set_json(200)
             self.wfile.write(json.dumps({'stopped': ok}).encode('utf-8'))
+            return
+        elif parsed.path == '/kill':
+            ok = force_kill_current()
+            self._set_json(200)
+            self.wfile.write(json.dumps({'killed': ok}).encode('utf-8'))
             return
         elif parsed.path == '/settings':
             try:
