@@ -1,0 +1,28 @@
+{
+  "systems": [
+    {
+      "system_name": "Adams County",
+      "config_file": "/home/pi/scanner_apps/scanner/adams/adams_fire.sh"
+    },    
+    {
+      "system_name": "Aurora Fire",
+      "config_file": "/home/pi/scanner_apps/scanner/aurora_fire/aurora_fire.sh"
+    },
+    {
+      "system_name": "Colorado DTRS",
+      "config_file": "/home/pi/scanner_apps/scanner/co_dtrs/co_.sh"
+    },     
+    {
+      "system_name": "Colorado State Patrol",
+      "config_file": "/home/pi/scanner_apps/scanner/co_state_patrol/co_state_patrol.sh"
+    },
+    {
+      "system_name": "Douglas County",
+      "config_file": "/home/pi/scanner_apps/scanner/douglas/douglas.sh"
+    },       
+    {
+      "system_name": "South Metro Fire",
+      "config_file": "/home/pi/scanner_apps/scanner/southmetro_fire/southmetro_fire.sh"
+    }
+  ]
+}
