@@ -19,6 +19,7 @@ Notes:
   - **Systems**: clickable buttons for each system. Clicking a system starts its script; the active system button will turn red while running.
   - **Power**: **OP25 Control Options** — control panel with **Stop**, **Kill**, **Restart**, and **Reload** (reload systems list). This tab also contains a **Server Host Power** subsection with **Reboot**/**Shutdown** host-level buttons; **Current status** indicator is shown here. Be careful: Reboot/Shutdown affect the whole host.
 - Use the **Settings** tab to set an auto-started default system; the selection is saved to `server_settings.json` in the same directory.
+- The Systems tab now shows a compact grid of system buttons (3 columns) for easier scanning when you have many systems.
 
 Host reboot/shutdown notes:
 - By default the server will attempt to run `reboot`/`shutdown -h now`. If the server is not running as root, it will prefix commands with `sudo` and will therefore require passwordless sudo configuration to work unattended. Example sudoers entry (edit with `visudo`):
