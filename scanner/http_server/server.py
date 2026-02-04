@@ -106,30 +106,35 @@ class Handler(BaseHTTPRequestHandler):
             html.append('<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;color:#222} .tabs{display:flex;gap:8px;margin-bottom:16px} .tabs button{padding:8px 14px;border:0;border-radius:6px;background:#eee;cursor:pointer} .tabs button.active{background:#3498db;color:#fff} .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)} .system-button{display:inline-block;margin:6px;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6;cursor:pointer} .system-button.active{background:#e74c3c;color:#fff;border-color:#e74c3c} .controls{display:flex;gap:8px;align-items:center;margin-top:8px} .muted{color:#666;font-size:0.9em} #status{font-weight:600}</style>')
             html.append('</head><body>')
             html.append('<h1>OP25 Control</h1>')
-            html.append('<div class="tabs"><button id="tab-systems" class="active" onclick="showTab(\'systems\')">Systems</button><button id="tab-power" onclick="showTab(\'power\')">Power</button></div>')
-            html.append('<div id="tab-systems" class="tabcontent card">')
+            html.append('<div class="tabs"><button id="tab-btn-systems" class="active" onclick="showTab(\'systems\')">Systems</button><button id="tab-btn-power" onclick="showTab(\'power\')">Power</button></div>')
+            html.append('<div id="tab-content-systems" class="tabcontent card">')
             html.append('<div class="muted">Click a system to start it; the active system will turn <b>red</b>.</div>')
             html.append('<div style="margin-top:12px" id="systems-list">Loading systems…</div>')
             html.append('<div style="margin-top:10px"><label>Default system: <select id="default_select"></select></label> <button onclick="saveDefault()">Save Default</button> <button onclick="startDefault()">Start Default</button></div>')
             html.append('<div style="margin-top:12px" class="controls"><button onclick="reloadSystems()">Reload</button> <span class="muted">Current status: </span> <span id="status">(no process)</span></div>')
             html.append('</div>')
 
-            html.append('<div id="tab-power" class="tabcontent" style="display:none">')
+            html.append('<div id="tab-content-power" class="tabcontent" style="display:none">')
             html.append('<div class="card"><h3>Power</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button><button onclick="hostReboot()" style="background:#f39c12;color:#fff;border-color:#f39c12">Reboot Host</button><button onclick="hostShutdown()" style="background:#c0392b;color:#fff;border-color:#c0392b">Shutdown Host</button></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><p class="muted">Process info: <span id="power-info">none</span></p><p class="muted">Warning: Reboot/Shutdown will affect the host; ensure the server user can run these commands (see README).</p></div>')
             html.append('</div>')
 
             html.append('''
 <script>
 function showTab(name){
+  // hide all tab contents
   document.querySelectorAll('.tabcontent').forEach(el=>el.style.display='none');
-  document.getElementById('tab-'+name).style.display='block';
+  // show the requested content
+  const content = document.getElementById('tab-content-'+name);
+  if(content) content.style.display='block';
+  // update active tab button
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-  // find the tab button with the matching onclick attribute and mark it active
-  const btn = Array.from(document.querySelectorAll('.tabs button')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+name+"'"));
+  const btn = document.getElementById('tab-btn-'+name);
   if(btn) btn.classList.add('active');
-  // when showing systems tab, refresh the systems list and status
+  // refresh relevant data when switching
   if(name === 'systems'){
     if(typeof renderSystems === 'function') renderSystems();
+    if(typeof updateStatus === 'function') updateStatus();
+  } else if(name === 'power'){
     if(typeof updateStatus === 'function') updateStatus();
   }
 }
