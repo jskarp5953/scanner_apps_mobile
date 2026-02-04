@@ -15,3 +15,4 @@ python3 server.py
 Notes:
 - The server reads `op25_system.json` in the same directory. Ensure the `config_file` paths point to executable shell scripts on the host.
 - Scripts are launched via `/bin/bash <script>` and run in their own process group; the server attempts to gracefully terminate the previous process group when starting a new system.
+- Use the **Default system** dropdown in the web UI to pick a system to auto-start when the server launches. The selection is saved to `server_settings.json` in the same directory. You can also save the default via the **Save Default** button and start it immediately via **Start Default**.
