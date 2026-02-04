@@ -2,7 +2,7 @@
   "systems": [
     {
       "system_name": "Adams County",
-      "config_file": "/home/pi/scanner_apps/scanner/adams/adams_fire.sh"
+      "config_file": "/home/pi/scanner_apps/scanner/adams/adams.sh"
     },    
     {
       "system_name": "Aurora Fire",
