@@ -103,7 +103,7 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path == '/':
             html = ['<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>OP25 Control</title>']
-            html.append('<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;color:#222} .tabs{display:flex;gap:8px;margin-bottom:16px} .tabs button{padding:8px 14px;border:0;border-radius:6px;background:#eee;cursor:pointer} .tabs button.active{background:#3498db;color:#fff} .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)} .system-button{display:block;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6;cursor:pointer;text-align:center;width:100%;} .system-button.active{background:#e74c3c;color:#fff;border-color:#e74c3c} .controls{display:flex;gap:8px;align-items:center;margin-top:8px} .muted{color:#666;font-size:0.9em} #status{font-weight:600} /* grid layout */ #systems-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start}</style>')
+            html.append('<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;color:#222} .tabs{display:flex;gap:8px;margin-bottom:16px} .tabs button{padding:8px 14px;border:0;border-radius:6px;background:#eee;cursor:pointer} .tabs button.active{background:#3498db;color:#fff} .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)} .system-button{display:block;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6;cursor:pointer;text-align:center;width:100%;} .system-button.active{background:#e74c3c;color:#fff;border-color:#e74c3c} .controls{display:flex;gap:8px;align-items:center;margin-top:8px} .muted{color:#666;font-size:0.9em} #status{font-weight:600} /* grid layout */ #systems-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start} /* modal */ .modal-overlay{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000} .modal{background:#fff;padding:16px;border-radius:8px;max-width:420px;width:90%;box-shadow:0 6px 20px rgba(0,0,0,0.2)} .modal h4{margin:0 0 8px 0} .modal .muted{margin-bottom:12px} .modal .modal-controls{display:flex;gap:8px;justify-content:flex-end} .btn-danger{background:#e74c3c;color:#fff;border-color:#e74c3c} .btn-warning{background:#f39c12;color:#fff;border-color:#f39c12}</style>')
             html.append('</head><body>')
             html.append('<h1>OP25 Control</h1>')
             html.append('<div class="tabs"><button id="tab-btn-systems" class="active" onclick="showTab(\'systems\')">Systems</button><button id="tab-btn-settings" onclick="showTab(\'settings\')">Settings</button><button id="tab-btn-power" onclick="showTab(\'power\')">Power</button></div>')
@@ -121,6 +121,28 @@ class Handler(BaseHTTPRequestHandler):
             html.append('<div id="tab-content-settings" class="tabcontent" style="display:none"><div class="card"><h3>Settings</h3><div><label>Default system: <select id="default_select"></select></label> <button onclick="saveDefault()">Save Default</button> <button onclick="startDefault()">Start Default</button></div><p class="muted">Save the default system to auto-start with the server.</p></div></div>')
 
             html.append('''
+<!-- confirm modal -->
+<div id="confirm-overlay" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h4 id="confirm-title"></h4>
+    <div class="muted" id="confirm-msg"></div>
+    <div class="modal-controls">
+      <button id="confirm-cancel">Cancel</button>
+      <button id="confirm-ok" style="background:#e74c3c;color:#fff;border-color:#e74c3c">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- info modal -->
+<div id="info-overlay" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="muted" id="info-msg"></div>
+    <div class="modal-controls">
+      <button id="info-ok">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function showTab(name){
   // hide all tab contents
@@ -142,6 +164,34 @@ function showTab(name){
     if(typeof renderSettings === 'function') renderSettings();
     if(typeof updateStatus === 'function') updateStatus();
   }
+}
+
+function showConfirm(title,msg){
+  return new Promise(resolve=>{
+    const ov = document.getElementById('confirm-overlay');
+    const t = document.getElementById('confirm-title');
+    const m = document.getElementById('confirm-msg');
+    const ok = document.getElementById('confirm-ok');
+    const cancel = document.getElementById('confirm-cancel');
+    const cleanup = ()=>{ ov.style.display='none'; ok.onclick = null; cancel.onclick = null; };
+    t.innerText = title||'Confirm';
+    m.innerText = msg||'Are you sure?';
+    ok.onclick = ()=>{ cleanup(); resolve(true); };
+    cancel.onclick = ()=>{ cleanup(); resolve(false); };
+    ov.style.display = 'flex';
+  });
+}
+
+function showInfo(msg){
+  return new Promise(resolve=>{
+    const ov = document.getElementById('info-overlay');
+    const m = document.getElementById('info-msg');
+    const ok = document.getElementById('info-ok');
+    const cleanup = ()=>{ ov.style.display='none'; ok.onclick = null; };
+    m.innerText = msg||'';
+    ok.onclick = ()=>{ cleanup(); resolve(true); };
+    ov.style.display = 'flex';
+  });
 }
 
 async function fetchSystems(){
@@ -187,13 +237,13 @@ async function saveDefault(){
   const value = sel.value || null;
   const r = await fetch('/settings', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({default: value})});
   const j = await r.json();
-  if(r.ok) alert('Saved default: '+value);
-  else alert('Save failed: '+ (j.error || JSON.stringify(j)));
+  if(r.ok) await showInfo('Saved default: '+value);
+  else await showInfo('Save failed: '+ (j.error || JSON.stringify(j)));
 }
 
 async function startDefault(){
   const sel = document.getElementById('default_select');
-  if(!sel) return alert('No default selected');
+  if(!sel) return await showInfo('No default selected');
   await start(sel.value);
 }
 
@@ -204,37 +254,41 @@ async function start(name){
   const j = await resp.json();
   updateStatus();
   buttons.forEach(b=>b.disabled=false);
-  if(!resp.ok) alert('Start failed: '+ (j.error || JSON.stringify(j)));
+  if(!resp.ok) await showInfo('Start failed: '+ (j.error || JSON.stringify(j)));
 }
 
 async function stop(){
-  const r = await fetch('/stop', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) alert('Stop failed')
+  const r = await fetch('/stop', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) await showInfo('Stop failed')
 }
 
 async function kill(){
-  const r = await fetch('/kill', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) alert('Kill failed')
+  const ok = await showConfirm('Kill process','Forcefully terminate the running process?');
+  if(!ok) return;
+  const r = await fetch('/kill', {method:'POST'}); const j = await r.json(); updateStatus(); if(!r.ok) await showInfo('Kill failed: '+ (j.error || JSON.stringify(j))); else await showInfo('Kill succeeded');
 }
 
 async function restart(){
   const st = await (await fetch('/status')).json();
-  if(!st.running){ alert('No running system to restart'); return }
+  if(!st.running){ await showInfo('No running system to restart'); return }
+  const ok = await showConfirm('Restart system','Restart the running system now?');
+  if(!ok) return;
   const name = st.system_name; await stop(); await start(name);
 }
 
 async function hostReboot(){
-  if(!confirm('Reboot the host now? This will reboot the Raspberry Pi.')) return;
+  const ok = await showConfirm('Reboot host','Reboot the host now? This will reboot the machine.');
+  if(!ok) return;
   const r = await fetch('/host/reboot', {method:'POST'});
   const j = await r.json();
-  if(!r.ok) alert('Reboot failed: '+(j.error||JSON.stringify(j)));
-  else alert('Reboot initiated');
+  if(!r.ok) await showInfo('Reboot failed: '+(j.error||JSON.stringify(j))); else await showInfo('Reboot initiated');
 }
 
 async function hostShutdown(){
-  if(!confirm('Shutdown the host now? This will power off the Raspberry Pi.')) return;
+  const ok = await showConfirm('Shutdown host','Shutdown the host now? This will power off the machine.');
+  if(!ok) return;
   const r = await fetch('/host/shutdown', {method:'POST'});
   const j = await r.json();
-  if(!r.ok) alert('Shutdown failed: '+(j.error||JSON.stringify(j)));
-  else alert('Shutdown initiated');
+  if(!r.ok) await showInfo('Shutdown failed: '+(j.error||JSON.stringify(j))); else await showInfo('Shutdown initiated');
 }
 
 async function updateStatus(){
