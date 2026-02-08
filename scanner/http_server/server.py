@@ -284,7 +284,27 @@ async function startDefault(){
 
 async function start(name){
   const buttons = document.querySelectorAll('.system-button');
-  buttons.forEach(b=>{ if(b.dataset.name===name){ b.disabled=true } });
+  // disable all buttons while we perform the stop/start sequence
+  buttons.forEach(b=>{ b.disabled=true });
+
+  // If a different system is running, stop it first and wait for shutdown
+  try{
+    const st = await (await fetch('/status')).json();
+    if(st.running && st.system_name && st.system_name !== name){
+      await showInfo('Stopping running system: '+st.system_name);
+      await fetch('/stop', {method:'POST'});
+      // wait up to 5s for process to stop
+      const deadline = Date.now() + 5000;
+      while(Date.now() < deadline){
+        const now = await (await fetch('/status')).json();
+        if(!now.running) break;
+        await new Promise(r=>setTimeout(r, 200));
+      }
+    }
+  }catch(e){
+    // ignore status errors and proceed to start
+  }
+
   const resp = await fetch('/start', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system_name:name})});
   const j = await resp.json();
   updateStatus();
