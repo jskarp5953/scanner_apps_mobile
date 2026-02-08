@@ -150,7 +150,7 @@ class Handler(BaseHTTPRequestHandler):
             html.append('</div>')
 
             html.append('<div id="tab-content-power" class="tabcontent" style="display:none">')
-            html.append('<div class="card"><h3>OP25 Control Options</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button><button onclick="reloadSystems()">Reload</button></div><div style="margin-top:8px" class="muted">Current status: <span id="status">(no process)</span></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><p class="muted">Process info: <span id="power-info">none</span></p><hr/><h4>Server Host Power</h4><div class="controls"><button onclick="hostReboot()" style="background:#f39c12;color:#fff;border-color:#f39c12">Reboot Host</button><button onclick="hostShutdown()" style="background:#c0392b;color:#fff;border-color:#c0392b">Shutdown Host</button></div><p class="muted">Warning: Reboot/Shutdown will affect the host; ensure the server user can run these commands (see README).</p></div>' )
+            html.append('<div class="card"><h3>OP25 Control Options</h3><div class="controls"><button onclick="stop()">Stop</button><button onclick="kill()">Kill</button><button onclick="restart()">Restart</button><button onclick="reloadSystems()">Reload</button></div><div style="margin-top:8px" class="muted">Current status: <span id="status">(no process)</span></div><p class="muted">Use <b>Kill</b> to forcefully terminate if Stop does not work.</p><hr/><h4>Server Host Power</h4><div class="controls"><button onclick="hostReboot()" style="background:#f39c12;color:#fff;border-color:#f39c12">Reboot Host</button><button onclick="hostShutdown()" style="background:#c0392b;color:#fff;border-color:#c0392b">Shutdown Host</button></div><p class="muted">Warning: Reboot/Shutdown will affect the host; ensure the server user can run these commands (see README).</p></div>' )
             html.append('</div>')
 
             html.append('<div id="tab-content-settings" class="tabcontent" style="display:none"><div class="card"><h3>Settings</h3><div><label>Default system: <select id="default_select"></select></label> <button onclick="saveDefault()">Save Default</button> <button onclick="startDefault()">Start Default</button></div><p class="muted">Save the default system to auto-start with the server.</p></div></div>')
@@ -329,10 +329,9 @@ async function hostShutdown(){
 async function updateStatus(){
   const r = await fetch('/status');
   const j = await r.json();
-  const statusEl = document.getElementById('status');
-  const powerInfo = document.getElementById('power-info');
-  if(j.running){ statusEl.innerText = j.system_name+' (pid '+j.pid+')'; powerInfo.innerText = j.system_name+' (pid '+j.pid+')' }
-  else { statusEl.innerText = '(no process)'; powerInfo.innerText = 'none' }
+    const statusEl = document.getElementById('status');
+    if(j.running){ statusEl.innerText = j.system_name+' (pid '+j.pid+')' }
+    else { statusEl.innerText = '(no process)' }
   document.querySelectorAll('.system-button').forEach(b=>{
     if(j.running && b.dataset.name===j.system_name){ b.classList.add('active') } else { b.classList.remove('active') }
   });
