@@ -57,7 +57,7 @@
                 "meta_format_tag":  "[%TGID%] %TAG%",
                 "meta_format_rid":  "@ [%RID%]",
                 "meta_format_rtag": "@ [%RID%] %RTAG%",
-                "icecastServerAddress": "rpiscanner:8000",
+                "icecastServerAddress": "rpiscanner.local:8000",
                 "icecastMountpoint": "op25",
                 "icecastMountExt": ".m3u",
                 "icecastPass": "Paveouzo11217",
