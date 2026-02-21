@@ -353,7 +353,13 @@ async function updateStatus(){
     if(j.running){ statusEl.innerText = j.system_name+' (pid '+j.pid+')' }
     else { statusEl.innerText = '(no process)' }
   document.querySelectorAll('.system-button').forEach(b=>{
-    if(j.running && b.dataset.name===j.system_name){ b.classList.add('active') } else { b.classList.remove('active') }
+    if(j.running && b.dataset.name===j.system_name){
+      b.classList.add('active');
+      b.disabled = true;
+    } else {
+      b.classList.remove('active');
+      b.disabled = false;
+    }
   });
 }
 
