@@ -4,6 +4,7 @@ import os
 import signal
 import subprocess
 import threading
+import base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
@@ -134,9 +135,41 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'text/html; charset=utf-8')
         self.end_headers()
 
+    def _unauthorized(self):
+      self.send_response(401)
+      self.send_header('WWW-Authenticate', 'Basic realm="OP25"')
+      self.end_headers()
+
+    def _check_auth(self):
+      """Return True if request is authorized or if no ADMIN_USER/PASS set."""
+      user = os.environ.get('ADMIN_USER')
+      pwd = os.environ.get('ADMIN_PASS')
+      # Require credentials to be configured. If missing, deny access
+      # to force operators to set ADMIN_USER and ADMIN_PASS.
+      if not user or not pwd:
+        self._unauthorized()
+        return False
+      auth = self.headers.get('Authorization')
+      if not auth or not auth.startswith('Basic '):
+        self._unauthorized()
+        return False
+      try:
+        token = auth.split(' ', 1)[1]
+        decoded = base64.b64decode(token).decode('utf-8')
+        u, p = decoded.split(':', 1)
+      except Exception:
+        self._unauthorized()
+        return False
+      if u == user and p == pwd:
+        return True
+      self._unauthorized()
+      return False
+
     def do_GET(self):
         parsed = urlparse(self.path)
         if parsed.path == '/':
+          if not self._check_auth():
+            return
             html = ['<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>OP25 Control</title>']
             html.append('<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;color:#222} .tabs{display:flex;gap:8px;margin-bottom:16px} .tabs button{padding:8px 14px;border:0;border-radius:6px;background:#eee;cursor:pointer} .tabs button.active{background:#3498db;color:#fff} .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)} .system-button{display:block;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#f6f6f6;cursor:pointer;text-align:center;width:100%;transition:transform .08s ease,box-shadow .12s ease,opacity .12s ease} .system-button:active{transform:translateY(1px)} .system-button.active{background:#e74c3c;color:#fff;border-color:#e74c3c} .controls{display:flex;gap:8px;align-items:center;margin-top:8px} .muted{color:#666;font-size:0.9em} #status{font-weight:600} /* grid layout */ #systems-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start} /* modal */ .modal-overlay{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000} .modal{background:#fff;padding:16px;border-radius:8px;max-width:420px;width:90%;box-shadow:0 6px 20px rgba(0,0,0,0.2)} .modal h4{margin:0 0 8px 0} .modal .muted{margin-bottom:12px} .modal .modal-controls{display:flex;gap:8px;justify-content:flex-end} .btn-danger{background:#e74c3c;color:#fff;border-color:#e74c3c} .btn-warning{background:#f39c12;color:#fff;border-color:#f39c12} /* larger power tab buttons */ #tab-content-power .controls button{padding:12px 18px;font-size:1.05rem;border-radius:10px;min-width:110px} /* disabled active system visuals */ .system-button:disabled{opacity:0.75;cursor:not-allowed;filter:grayscale(6%);} .system-button.active:disabled{box-shadow:0 0 0 4px rgba(231,76,60,0.08);outline:2px solid rgba(231,76,60,0.06);opacity:1}</style>')
             html.append('</head><body>')
@@ -382,6 +415,9 @@ setInterval(updateStatus,3000);
                     self.wfile.write(json.dumps({'running': True, 'pid': _proc.pid, 'system_name': _proc_info.get('system_name')}).encode('utf-8'))
                 return
         elif parsed.path == '/settings':
+          # restrict settings view to authenticated users
+          if not self._check_auth():
+            return
             s = read_settings()
             self._set_json(200)
             self.wfile.write(json.dumps({'default': s.get('default')}).encode('utf-8'))
@@ -399,6 +435,11 @@ setInterval(updateStatus,3000);
         parsed = urlparse(self.path)
         length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(length) if length else b''
+        # Require auth for state-changing operations
+        if parsed.path.startswith('/start') or parsed.path.startswith('/stop') or parsed.path.startswith('/kill') or parsed.path.startswith('/host/') or parsed.path.startswith('/settings'):
+          if not self._check_auth():
+            return
+
         if parsed.path == '/start':
             try:
                 data = json.loads(body.decode('utf-8'))
