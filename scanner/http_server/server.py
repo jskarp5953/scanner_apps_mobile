@@ -141,11 +141,16 @@ class Handler(BaseHTTPRequestHandler):
       self.end_headers()
 
     def _check_auth(self):
-      """Return True if request is authorized or if no ADMIN_USER/PASS set."""
-      user = os.environ.get('ADMIN_USER')
-      pwd = os.environ.get('ADMIN_PASS')
-      # Require credentials to be configured. If missing, deny access
-      # to force operators to set ADMIN_USER and ADMIN_PASS.
+      """Return True if request is authorized.
+
+      Credentials are read from server_settings.json (admin_user/admin_pass)
+      falling back to environment vars ADMIN_USER/ADMIN_PASS. If no
+      credentials are configured, deny access to force operators to set
+      an admin user and password.
+      """
+      s = read_settings() or {}
+      user = s.get('admin_user') or os.environ.get('ADMIN_USER')
+      pwd = s.get('admin_pass') or os.environ.get('ADMIN_PASS')
       if not user or not pwd:
         self._unauthorized()
         return False
@@ -418,10 +423,10 @@ setInterval(updateStatus,3000);
           # restrict settings view to authenticated users
           if not self._check_auth():
             return
-            s = read_settings()
-            self._set_json(200)
-            self.wfile.write(json.dumps({'default': s.get('default')}).encode('utf-8'))
-            return
+          s = read_settings()
+          self._set_json(200)
+          self.wfile.write(json.dumps({'default': s.get('default'), 'admin_user': s.get('admin_user')}).encode('utf-8'))
+          return
         elif parsed.path == '/systems':
             # return the raw systems list for client-side UI
             systems = read_systems()
@@ -507,16 +512,28 @@ setInterval(updateStatus,3000);
             return
         elif parsed.path == '/settings':
             try:
-                data = json.loads(body.decode('utf-8')) if body else {}
-                default = data.get('default')
-                systems = read_systems()
-                if default and not any(s.get('system_name') == default for s in systems):
-                    self._set_json(400)
-                    self.wfile.write(json.dumps({'error': 'system not found'}).encode('utf-8'))
-                    return
-                write_settings({'default': default})
-                self._set_json(200)
-                self.wfile.write(json.dumps({'saved': True, 'default': default}).encode('utf-8'))
+            data = json.loads(body.decode('utf-8')) if body else {}
+            default = data.get('default')
+            admin_user = data.get('admin_user')
+            admin_pass = data.get('admin_pass')
+            systems = read_systems()
+            if default and not any(s.get('system_name') == default for s in systems):
+              self._set_json(400)
+              self.wfile.write(json.dumps({'error': 'system not found'}).encode('utf-8'))
+              return
+            # merge with existing settings so we don't wipe other keys
+            s = read_settings() or {}
+            if default is not None:
+              s['default'] = default
+            if admin_user is not None:
+              s['admin_user'] = admin_user
+            if admin_pass is not None:
+              s['admin_pass'] = admin_pass
+            write_settings(s)
+            # Do not echo admin_pass back in the response
+            resp = {'saved': True, 'default': s.get('default'), 'admin_user': s.get('admin_user')}
+            self._set_json(200)
+            self.wfile.write(json.dumps(resp).encode('utf-8'))
             except Exception as e:
                 self._set_json(500)
                 self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
