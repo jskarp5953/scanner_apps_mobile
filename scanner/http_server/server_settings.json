@@ -1,6 +1,1 @@
-{
-  "default": null,
-  "users": {
-    "admin": "changeme"
-  }
-}
+{"default": null, "users": {"admin": "newadmin123", "operator": "oppass456"}}

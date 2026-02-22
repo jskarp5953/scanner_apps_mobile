@@ -1,6 +1,6 @@
 # OP25 HTTP Control Server
 
-Python HTTP server to manage OP25 systems: list systems from `op25_system.json`, start/stop associated shell scripts, track running PIDs, and provide a modern web UI with authentication.
+Python HTTP server to manage OP25 systems: list systems from `op25_system.json`, start/stop associated shell scripts, track running PIDs, and provide a modern web UI with multi-user authentication.
 
 ## Quick Start
 
@@ -22,39 +22,42 @@ python3 server.py
 
 3. Open a browser to `http://<host>:8081` and log in with the above credentials.
 
-### Set Your Own Credentials
+## Multi-User Support
 
-You have two options:
+The server now supports multiple independent user accounts with separate passwords.
 
-**Option A: Via the Web UI**
-1. Log in with default credentials (admin / changeme).
-2. Go to the **Settings** tab.
-3. Update the admin username and password (not yet exposed in the UI; use Option B instead).
+### Managing Users
 
-**Option B: Edit `server_settings.json` directly**
+**Via the Web UI (Recommended)**
+1. Log in with any user account (default: admin / changeme).
+2. Go to the **Settings** tab to:
+   - **Change Password**: Update your own password (requires current password verification)
+   - **Add User**: Create new user accounts (requires your current password)
+   - **Existing Users**: View a list of all user accounts on the system
+   - **Current User**: See who you are logged in as
+
+**Edit `server_settings.json` directly**
 1. Stop the server.
-2. Edit `server_settings.json` in the same directory:
+2. Edit the `users` dictionary:
 
 ```json
 {
   "default": null,
-  "admin_user": "your-username",
-  "admin_pass": "your-password"
+  "users": {
+    "admin": "secure-password",
+    "operator": "another-password",
+    "viewer": "third-password"
+  }
 }
 ```
 
-3. Restart the server and log in with your new credentials.
+3. Restart the server and log in with any user account.
 
-**Option C: Use environment variables (backward compatible)**
-Set `ADMIN_USER` and `ADMIN_PASS` environment variables before starting:
-
-```bash
-export ADMIN_USER=myuser
-export ADMIN_PASS=mypass
-python3 server.py
-```
-
-Priority: `server_settings.json` credentials take precedence over environment variables.
+**Backward Compatibility**
+For existing deployments, the server still supports legacy `admin_user`/`admin_pass` format and environment variables (`ADMIN_USER`, `ADMIN_PASS`). Priority order:
+1. Multi-user `users` dict in `server_settings.json` (new format)
+2. Legacy `admin_user`/`admin_pass` in `server_settings.json`
+3. Environment variables `ADMIN_USER`/`ADMIN_PASS`
 
 ## Features
 
@@ -67,9 +70,12 @@ Priority: `server_settings.json` credentials take precedence over environment va
   - **Current status** indicator showing the running system and its PID.
   - **Server Host Power** subsection with **Reboot Host** and **Shutdown Host** buttons (requires confirmation).
 
-- **Settings**: Configure:
+- **Settings**: Configure user and system settings:
+  - **Current User**: displays the logged-in user.
   - **Default system**: select a system to auto-start when the server starts; saves to `server_settings.json`.
-  - **Start Default**: manually start the configured default system.
+  - **Change Password**: update your own password (requires current password for verification).
+  - **Add User**: create a new user account (requires your current password).
+  - **Existing Users**: list all user accounts in the system.
 
 ### Process Management
 
@@ -99,13 +105,15 @@ Persisted settings file created on first run:
 ```json
 {
   "default": "aurora_fire",
-  "admin_user": "admin",
-  "admin_pass": "changeme"
+  "users": {
+    "admin": "secure-password-here",
+    "operator": "operator-password"
+  }
 }
 ```
 
 - **default**: system name to auto-start (null = no auto-start).
-- **admin_user** / **admin_pass**: HTTP Basic Authentication credentials.
+- **users**: dictionary mapping username → password. Each user can log in independently with their own password.
 
 ### `op25_system.json`
 
@@ -155,11 +163,14 @@ All endpoints (except `/systems` and `/status`) require HTTP Basic Authenticatio
 | GET | `/` | Serves the web UI (requires auth). |
 | GET | `/systems` | JSON list of available systems. |
 | GET | `/status` | JSON object: `{running, pid, system_name}`. |
-| GET | `/settings` | JSON object: `{default, admin_user}` (requires auth). |
+| GET | `/settings` | JSON object: `{default, users: [...], current_user}` (requires auth). |
 | POST | `/start` | Start a system; body: `{"system_name":"..."}`. |
 | POST | `/stop` | Gracefully stop the current system. |
 | POST | `/kill` | Force-kill the current system. |
-| POST | `/settings` | Update settings; body: `{"default":"...", "admin_user":"...", "admin_pass":"..."}`. |
+| POST | `/settings` | Update settings or manage users (requires auth); supported actions: |
+| | | - `{"default":"system_name"}` - set default system |
+| | | - `{"action":"change_password","current_password":"...","new_password":"..."}` - change user password |
+| | | - `{"action":"add_user","new_user":"...","new_password":"..."}` - add new user |
 | POST | `/host/reboot` | Reboot the host (requires auth and confirmation in UI). |
 | POST | `/host/shutdown` | Shutdown the host (requires auth and confirmation in UI). |
 
@@ -178,8 +189,9 @@ kill -9 <PID>
 ```
 
 **Auth fails:**
-- Check `server_settings.json` for correct `admin_user` and `admin_pass`.
-- Verify `curl` basic auth: `curl -u username:password http://localhost:8081/`
+- Check `server_settings.json` for correct username and password in the `users` dict.
+- Verify user exists and password is correct: `curl -u username:password http://localhost:8081/settings`
+- For legacy format, check `admin_user` and `admin_pass` fields.
 
 **System script doesn't start:**
 - Ensure `config_file` path in `op25_system.json` is correct and executable.
