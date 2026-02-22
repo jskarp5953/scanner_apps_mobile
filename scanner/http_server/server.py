@@ -19,7 +19,15 @@ _proc_info = None
 
 def read_settings():
     if not os.path.exists(SETTINGS_PATH):
-        return {}
+        # Initialize with default structure on first run
+        defaults = {'default': None, 'users': {'admin': 'changeme'}}
+        try:
+            with open(SETTINGS_PATH, 'w') as f:
+                json.dump(defaults, f, indent=2)
+            print(f"Created default {SETTINGS_PATH} with admin:changeme")
+        except Exception as e:
+            print(f"Warning: could not create settings file: {e}")
+        return defaults
     try:
         with open(SETTINGS_PATH, 'r') as f:
             return json.load(f)
@@ -143,17 +151,10 @@ class Handler(BaseHTTPRequestHandler):
     def _check_auth(self):
       """Return True if request is authorized.
 
-      Credentials are read from server_settings.json (admin_user/admin_pass)
-      falling back to environment vars ADMIN_USER/ADMIN_PASS. If no
-      credentials are configured, deny access to force operators to set
-      an admin user and password.
+      Supports both new multi-user format (users dict) and legacy format
+      (admin_user/admin_pass), falling back to environment vars.
       """
       s = read_settings() or {}
-      user = s.get('admin_user') or os.environ.get('ADMIN_USER')
-      pwd = s.get('admin_pass') or os.environ.get('ADMIN_PASS')
-      if not user or not pwd:
-        self._unauthorized()
-        return False
       auth = self.headers.get('Authorization')
       if not auth or not auth.startswith('Basic '):
         self._unauthorized()
@@ -165,8 +166,18 @@ class Handler(BaseHTTPRequestHandler):
       except Exception:
         self._unauthorized()
         return False
-      if u == user and p == pwd:
+      
+      # Check against new multi-user format first
+      users = s.get('users', {})
+      if users and u in users and users[u] == p:
         return True
+      
+      # Fall back to legacy format
+      admin_user = s.get('admin_user') or os.environ.get('ADMIN_USER')
+      admin_pass = s.get('admin_pass') or os.environ.get('ADMIN_PASS')
+      if admin_user and admin_pass and u == admin_user and p == admin_pass:
+        return True
+      
       self._unauthorized()
       return False
 
