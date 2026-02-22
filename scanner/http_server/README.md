@@ -33,7 +33,8 @@ The server now supports multiple independent user accounts with separate passwor
 2. Go to the **Settings** tab to:
    - **Change Password**: Update your own password (requires current password verification)
    - **Add User**: Create new user accounts (requires your current password)
-   - **Existing Users**: View a list of all user accounts on the system
+   - **Remove User**: Delete user accounts (appears as a button next to each user, except your own account; requires your current password)
+   - **Existing Users**: View a list of all user accounts on the system with inline remove buttons
    - **Current User**: See who you are logged in as
 
 **Edit `server_settings.json` directly**
@@ -75,7 +76,8 @@ For existing deployments, the server still supports legacy `admin_user`/`admin_p
   - **Default system**: select a system to auto-start when the server starts; saves to `server_settings.json`.
   - **Change Password**: update your own password (requires current password for verification).
   - **Add User**: create a new user account (requires your current password).
-  - **Existing Users**: list all user accounts in the system.
+  - **Remove User**: delete user accounts (button next to each user, except your own).
+  - **Existing Users**: list all user accounts with inline remove buttons.
 
 ### Process Management
 
@@ -171,6 +173,7 @@ All endpoints (except `/systems` and `/status`) require HTTP Basic Authenticatio
 | | | - `{"default":"system_name"}` - set default system |
 | | | - `{"action":"change_password","current_password":"...","new_password":"..."}` - change user password |
 | | | - `{"action":"add_user","new_user":"...","new_password":"..."}` - add new user |
+| | | - `{"action":"remove_user","remove_user":"...","current_password":"..."}` - remove user (cannot remove your own account) |
 | POST | `/host/reboot` | Reboot the host (requires auth and confirmation in UI). |
 | POST | `/host/shutdown` | Shutdown the host (requires auth and confirmation in UI). |
 
