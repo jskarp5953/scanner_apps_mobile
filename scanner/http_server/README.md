@@ -78,6 +78,14 @@ For existing deployments, the server still supports legacy `admin_user`/`admin_p
   - **Add User**: create a new user account (requires your current password).
   - **Remove User**: delete user accounts (button next to each user, except your own).
   - **Existing Users**: list all user accounts with inline remove buttons.
+ - **Settings**: Configure user and system settings:
+  - **Current User**: displays the logged-in user.
+  - **Default system**: select a system to auto-start when the server starts; saves to `server_settings.json`.
+  - **Change Password**: update your own password (requires current password for verification).
+  - **Add User**: create a new user account (requires your current password).
+  - **Remove User**: delete user accounts (button next to each user, except your own).
+  - **Logout**: a Logout button in the page header clears browser-cached Basic Auth by triggering a 401 response; your browser will prompt for credentials after logging out.
+  - **Existing Users**: list all user accounts with inline remove buttons.
 
 ### Process Management
 
