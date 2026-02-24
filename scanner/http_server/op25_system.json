@@ -23,6 +23,10 @@
     {
       "system_name": "South Metro Fire",
       "config_file": "/home/pi/scanner_apps/scanner/southmetro_fire/southmetro_fire.sh"
+    },
+    {
+      "system_name": "Colorado Springs",
+      "config_file": "/home/pi/scanner_apps/scanner/co_springs/co_springs.sh"
     }
   ]
 }
