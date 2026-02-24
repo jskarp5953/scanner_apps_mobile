@@ -1,0 +1,2 @@
+"Sysname"	"Control Channel List"	"Offset"	"NAC"	"Modulation"	"TGID Tags File"	"Whitelist"	"Blacklist"	"Center Frequency"
+"co_springs"	"853.7125"	"0"	"0"	"CQPSK"	"/home/pi/scanner_apps/scanner/co_springs/tgid.tsv"	"/home/pi/scanner_apps/scanner/co_springs/wlist.tsv"	""	""

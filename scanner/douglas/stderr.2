@@ -1,0 +1,63 @@
+Using Python /usr/bin/python3
+Starting OP25 (pid = 7730)
+Ignoring unnamed audio instance #0
+Configuring metadata stream #0 [stream0]: rpiscanner.local:8000/op25
+02/23/26 19:14:31.508869 [Douglas County] Initializing P25 system
+02/23/26 19:14:31.509007 [Douglas County] reading system tgid_tags_file: /home/pi/scanner_apps/scanner/douglas/tgid.tsv
+02/23/26 19:14:31.513341 [Douglas County] reading system whitelist file: /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.513928 [Douglas County] added talkgroup 1053 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.513995 [Douglas County] added talkgroup 1057 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514028 [Douglas County] added talkgroup 1059 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514058 [Douglas County] added talkgroup 1061 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514087 [Douglas County] added talkgroup 1063 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514116 [Douglas County] added talkgroup 1065 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514144 [Douglas County] added talkgroup 1861 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514171 [Douglas County] added talkgroup 1050 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514199 [Douglas County] added talkgroup 1052 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514226 [Douglas County] added talkgroup 1054 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514254 [Douglas County] added talkgroup 1051 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514281 [Douglas County] added talkgroup 1791 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514308 [Douglas County] added talkgroup 1042 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514335 [Douglas County] added talkgroup 519 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514363 [Douglas County] added talkgroup 520 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514390 [Douglas County] added talkgroup 515 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514416 [Douglas County] added talkgroup 516 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514443 [Douglas County] added talkgroup 526 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514470 [Douglas County] added talkgroup 527 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514497 [Douglas County] added talkgroup 528 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514523 [Douglas County] added talkgroup 529 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+02/23/26 19:14:31.514551 [Douglas County] added talkgroup 514 from /home/pi/scanner_apps/scanner/douglas/wlist.tsv
+Enabled trunking module: tk_p25.py
+device: {'args': 'rtl', 'gains': 'LNA:39', 'name': 'sdr0', 'offset': 0, 'ppm': 0.0, 'usable_bw_pct': 0.85, 'rate': 2560000, 'tunable': True}
+Device name: "sdr0", osmosdr args: "rtl"
+gr-osmosdr 0.2.0.0 (0.2.0) gnuradio 3.10.12.0
+built-in source types: file fcd rtl rtl_tcp uhd miri hackrf bladerf rfspace airspy airspyhf soapy redpitaya freesrp xtrx 
+Using device #0 Realtek RTL2838UHIDIR SN: 00000001
+Found Rafael Micro R820T tuner
+[R82XX] PLL not locked!
+[R82XX] PLL not locked!
+channel (dev sdr0): {'name': 'Voice Channel', 'device': 'sdr0', 'trunking_sysname': 'Douglas County', 'demod_type': 'cqpsk', 'destination': 'udp://rpiscanner:23456', 'meta_stream_name': 'stream0', 'excess_bw': 0.2, 'filter_type': 'rc', 'if_rate': 24000, 'plot': '', 'symbol_rate': 4800, 'enable_analog': 'off', 'whitelist': '', 'blacklist': '', 'crypt_keys': ''}
+demodulator: xlator if_rate=24000, input_rate=2560000, decim=106, if taps=[511,49], resampled_rate=24150, sps=5
+02/23/26 19:14:32.248141 [0] op25_audio::op25_audio: destination: udp://rpiscanner:23456 [schema: udp, host: rpiscanner, port: 23456]
+02/23/26 19:14:32.248581 [0] op25_audio::open_socket: enabled udp host(127.0.1.1), wireshark(23456), audio(23456)
+02/23/26 19:14:32.248983 crypt behavior: 2
+02/23/26 19:14:32.253483 [0] Initializing P25 receiver: Voice Channel
+02/23/26 19:14:32.253619 [0] metadata stream: stream0
+python version detected: 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0]
+Allocating 15 zero-copy buffers
+02/23/26 19:14:34.254066 [0] voice update:  tg(1053), rid(190701), freq(773.668750), slot(-), prio(3)
+02/23/26 19:14:34.923162 [0] voice update:  tg(1053), rid(0), freq(773.668750), slot(-), prio(3)
+02/23/26 19:14:49.359693 [0] voice update:  tg(1053), rid(103221), freq(771.856250), slot(-), prio(3)
+02/23/26 19:14:49.935004 [0] voice update:  tg(1053), rid(0), freq(771.856250), slot(-), prio(3)
+02/23/26 19:14:52.176443 [0] voice update:  tg(1053), rid(0), freq(771.856250), slot(-), prio(3)
+02/23/26 19:14:52.646256 [0] voice update:  tg(1053), rid(0), freq(771.856250), slot(-), prio(3)
+02/23/26 19:15:15.676463 [0] voice update:  tg(1053), rid(100534), freq(852.150000), slot(-), prio(3)
+02/23/26 19:15:16.287323 [0] voice update:  tg(1053), rid(0), freq(852.150000), slot(-), prio(3)
+02/23/26 19:15:28.125313 [0] voice update:  tg(1053), rid(190701), freq(851.737500), slot(-), prio(3)
+02/23/26 19:15:40.507488 [0] voice update:  tg(1053), rid(190701), freq(769.581250), slot(-), prio(3)
+02/23/26 19:15:49.632576 [0] voice update:  tg(1053), rid(190701), freq(773.668750), slot(-), prio(3)
+02/23/26 19:15:50.344918 [0] voice update:  tg(1053), rid(0), freq(773.668750), slot(-), prio(3)
+02/23/26 19:16:16.101673 [0] voice update:  tg(1053), rid(101933), freq(852.712500), slot(-), prio(3)
+02/23/26 19:16:16.712416 [0] voice update:  tg(1053), rid(0), freq(852.712500), slot(-), prio(3)
+02/23/26 19:16:27.511674 [0] voice update:  tg(1053), rid(0), freq(852.712500), slot(-), prio(3)
+02/23/26 19:16:35.038763 [0] voice update:  tg(1053), rid(190701), freq(769.581250), slot(-), prio(3)
