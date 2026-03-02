@@ -21,7 +21,7 @@
     "devices": [
         {
             "args": "rtl",
-            "gains": "LNA:39",
+            "gains": "LNA:30",
             "name": "sdr0",
             "offset": 0,
             "ppm": 0.0,
