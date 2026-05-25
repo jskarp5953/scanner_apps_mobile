@@ -27,6 +27,10 @@
     {
       "system_name": "Colorado Springs",
       "config_file": "/home/pi/scanner_apps/scanner/co_springs/co_springs.sh"
-    }
+    },
+    {
+      "system_name": "Larimer County",
+      "config_file": "/home/pi/scanner_apps/scanner/larimer/larimer.sh"
+    }    
   ]
 }
