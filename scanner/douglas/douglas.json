@@ -38,7 +38,7 @@
                 "#wacn": "0xbee00",
                 "#sysid": "0x4a2",
                 "sysname": "Douglas County",
-                "control_channel_list": "853.875,853.625,853.400",
+                "control_channel_list": "852.3875,852.925,853.525,853.900",
                 "whitelist": "/home/pi/scanner_apps/scanner/douglas/wlist.tsv",
                 "tgid_tags_file": "/home/pi/scanner_apps/scanner/douglas/tgid.tsv",
                 "rid_tags_file": "",
