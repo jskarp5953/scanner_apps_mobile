@@ -29,8 +29,16 @@
       "config_file": "/home/pi/scanner_apps/scanner/co_springs/co_springs.sh"
     },
     {
-      "system_name": "Larimer County",
-      "config_file": "/home/pi/scanner_apps/scanner/larimer/larimer.sh"
+      "system_name": "Loveland",
+      "config_file": "/home/pi/scanner_apps/scanner/loveland/loveland.sh"
+    },
+    {
+      "system_name": "Woodland Park",
+      "config_file": "/home/pi/scanner_apps/scanner/woodland_park/woodland_park.sh"
+    },
+    {
+      "system_name": "Muller State Park",
+      "config_file": "/home/pi/scanner_apps/scanner/muller_st_park/muller_st_park.sh"
     }    
   ]
 }

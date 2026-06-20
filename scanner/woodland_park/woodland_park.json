@@ -3,8 +3,8 @@
         {
             "name": "Voice Channel",
             "device": "sdr0",
-            "trunking_sysname": "Larimer County",
-            "demod_type": "cqpsk",
+            "trunking_sysname": "Woodland Park",
+            "demod_type": "C4FM",
             "destination": "udp://rpiscan:23456",
             "meta_stream_name": "stream0",
             "excess_bw": 0.2,
@@ -34,13 +34,13 @@
         "module": "tk_p25.py",
         "chans": [
             {
-                "#nac": "0x4a6",
+                "#nac": "0xD1F",
                 "#wacn": "0xbee00",
                 "#sysid": "0x4a2",
-                "sysname": "Larimer County",
-                "control_channel_list": "852.9375,853.200,853.5625,853.7625",
-                "whitelist": "/home/pi/scanner_apps/scanner/larimer/wlist.tsv",
-                "tgid_tags_file": "/home/pi/scanner_apps/scanner/larimer/tgid.tsv",
+                "sysname": "Woodland Park",
+                "control_channel_list": "852.425,854.4875",
+                "whitelist": "/home/pi/scanner_apps/scanner/woodland_park/wlist.tsv",
+                "tgid_tags_file": "/home/pi/scanner_apps/scanner/woodland_park/tgid.tsv",
                 "rid_tags_file": "",
                 "tdma_cc": false,
                 "crypt_behavior": 2
