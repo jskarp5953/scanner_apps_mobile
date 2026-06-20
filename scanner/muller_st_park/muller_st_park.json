@@ -4,7 +4,7 @@
             "name": "Voice Channel",
             "device": "sdr0",
             "trunking_sysname": "Muller State Park",
-            "demod_type": "C4FM",
+            "demod_type": "cqpsk",
             "destination": "udp://rpiscan:23456",
             "meta_stream_name": "stream0",
             "excess_bw": 0.2,
